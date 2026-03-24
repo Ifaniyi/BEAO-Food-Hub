@@ -1,16 +1,109 @@
-# React + Vite
+# 🛒 BEAO Food Hub
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern e-commerce web application for authentic Nigerian groceries, built with React, Tailwind CSS, Framer Motion, and Lucide React.
 
-Currently, two official plugins are available:
+## 🚀 Live Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Coming soon...
 
-## React Compiler
+## 📸 Preview
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+![BEAO Food Hub](./src/assets/food1.jpg)
 
-## Expanding the ESLint configuration
+## 🛠️ Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **React** — Frontend framework
+- **Tailwind CSS** — Styling
+- **Framer Motion** — Animations
+- **Lucide React** — Icons
+- **React Router DOM** — Navigation
+
+## ✨ Features
+
+- 📦 Product listing with categories filter
+- 🔍 Product search functionality
+- 👁️ Quick view modal for products
+- 🛒 Shopping cart drawer
+- ❤️ Wishlist / saved items
+- 📍 Order tracking page
+- 👤 User profile page
+- 📢 Animated announcement bar
+- 📱 Responsive design
+
+## 📁 Project Structure
+
+```
+src/
+├── assets/          # Product images
+├── components/      # Reusable components
+│   ├── AnnouncementBar.jsx
+│   ├── Navbar.jsx
+│   ├── CartDrawer.jsx
+│   ├── Hero.jsx
+│   ├── Bestsellers.jsx
+│   ├── QuickViewModal.jsx
+│   ├── WhyShopWithUs.jsx
+│   ├── SpecialOfferBanner.jsx
+│   ├── ProductsSection.jsx
+│   └── Footer.jsx
+├── pages/           # Page components
+│   ├── OrderTracking.jsx
+│   └── Profile.jsx
+├── App.jsx
+└── main.jsx
+```
+
+## ⚙️ Installation & Setup
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/Ifaniyi/beao-food-hub.git
+```
+
+2. Navigate to the project folder:
+
+```bash
+cd beao-food-hub
+```
+
+3. Install dependencies:
+
+```bash
+npm install
+```
+
+4. Start the development server:
+
+```bash
+npm run dev
+```
+
+5. Open your browser and visit:
+
+```
+http://localhost:5173
+```
+
+## 📦 Dependencies
+
+```bash
+npm install react-router-dom framer-motion lucide-react
+```
+
+## 🔮 Coming Soon
+
+- 🔐 Authentication (Login / Register)
+- 💳 Checkout flow
+- 📦 Order history
+- 🔗 Backend API integration
+- 💬 WhatsApp order integration
+
+## 👨‍💻 Developer
+
+Built with ❤️ for BEAO Food Hub
+
+## 📄 License
+
+This project is private and proprietary.
+© 2026 BEAO Food Hub. All rights reserved.

@@ -10,17 +10,24 @@ import ProductsSection from "./components/ProductsSection";
 import Footer from "./components/Footer";
 import OrderTracking from "./pages/OrderTracking";
 import Profile from "./pages/Profile";
+import WhatsAppButton from "./components/WhatsAppButton";
 
-function HomePage({ searchQuery, setSearchQuery }) {
+function HomePage({ searchQuery, setSearchQuery, cartItems, addToCart, updateQuantity, removeFromCart }) {
   return (
     <>
       <AnnouncementBar />
-      <Navbar searchQuery={searchQuery} onSearch={setSearchQuery} />
+      <Navbar
+        searchQuery={searchQuery}
+        onSearch={setSearchQuery}
+        cartItems={cartItems}
+        onUpdateQuantity={updateQuantity}
+        onRemove={removeFromCart}
+      />
       <Hero />
-      <Bestsellers searchQuery={searchQuery} />
+      <Bestsellers searchQuery={searchQuery} addToCart={addToCart} />
       <WhyShopWithUs />
       <SpecialOfferBanner />
-      <ProductsSection searchQuery={searchQuery} />
+      <ProductsSection searchQuery={searchQuery} addToCart={addToCart} />
       <Footer />
     </>
   );
@@ -28,21 +35,61 @@ function HomePage({ searchQuery, setSearchQuery }) {
 
 function App() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [cartItems, setCartItems] = useState([]);
+
+  const addToCart = (product, quantity = 1) => {
+    setCartItems((prev) => {
+      const existing = prev.find((item) => item.id === product.id);
+      if (existing) {
+        return prev.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + quantity }
+            : item
+        );
+      }
+      return [...prev, { ...product, quantity }];
+    });
+  };
+
+  const removeFromCart = (productId) => {
+    setCartItems((prev) => prev.filter((item) => item.id !== productId));
+  };
+
+  const updateQuantity = (productId, quantity) => {
+    if (quantity < 1) {
+      removeFromCart(productId);
+      return;
+    }
+    setCartItems((prev) =>
+      prev.map((item) =>
+        item.id === productId ? { ...item, quantity } : item
+      )
+    );
+  };
 
   return (
-    <Routes>
-      <Route
-        path="/"
-        element={
-          <HomePage
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
-          />
-        }
-      />
-      <Route path="/track-order" element={<OrderTracking />} />
-      <Route path="/profile" element={<Profile />} />
-    </Routes>
+    <>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <HomePage
+              searchQuery={searchQuery}
+              setSearchQuery={setSearchQuery}
+              cartItems={cartItems}
+              addToCart={addToCart}
+              updateQuantity={updateQuantity}
+              removeFromCart={removeFromCart}
+            />
+          }
+        />
+        <Route path="/track-order" element={<OrderTracking />} />
+        <Route path="/profile" element={<Profile />} />
+      </Routes>
+
+      {/* Shows on every page */}
+      <WhatsAppButton />
+    </>
   );
 }
 

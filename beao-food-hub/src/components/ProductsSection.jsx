@@ -30,7 +30,7 @@ const categories = [
 
 const products = [
   {
-    id: 1,
+    id: 101,
     category: "pepper",
     categoryLabel: "PEPPER",
     name: "Fresh AYAMASE / OFADA PEPPER MIX",
@@ -43,7 +43,7 @@ const products = [
     image: ofadapeppermix,
   },
   {
-    id: 2,
+    id: 102,
     category: "oil",
     categoryLabel: "OIL",
     name: "KINGS VEGETABLE OIL",
@@ -56,7 +56,7 @@ const products = [
     image: kingsvegetableoil,
   },
   {
-    id: 3,
+    id: 103,
     category: "local-snacks",
     categoryLabel: "LOCAL SNACKS",
     name: "Sisi Pelebe",
@@ -69,7 +69,7 @@ const products = [
     image: sisipelebe,
   },
   {
-    id: 4,
+    id: 104,
     category: "local-snacks",
     categoryLabel: "LOCAL SNACKS",
     name: "Crunchy Kuli Kuli Alata",
@@ -82,7 +82,7 @@ const products = [
     image: crunchykulikulialata,
   },
   {
-    id: 5,
+    id: 105,
     category: "local-snacks",
     categoryLabel: "LOCAL SNACKS",
     name: "KOKORO",
@@ -95,7 +95,7 @@ const products = [
     image: kokoro,
   },
   {
-    id: 6,
+    id: 106,
     category: "snacks",
     categoryLabel: "SNACKS",
     name: "Coconut Candy",
@@ -108,7 +108,7 @@ const products = [
     image: coconutcandy,
   },
   {
-    id: 7,
+    id: 107,
     category: "local-snacks",
     categoryLabel: "LOCAL SNACKS",
     name: "Babadudu",
@@ -121,7 +121,7 @@ const products = [
     image: babadudu,
   },
   {
-    id: 8,
+    id: 108,
     category: "crayfish",
     categoryLabel: "CRAYFISH",
     name: "Cleaned Blended Crayfish",
@@ -134,7 +134,7 @@ const products = [
     image: cleanedblendedcrayfish,
   },
   {
-    id: 9,
+    id: 109,
     category: "grains",
     categoryLabel: "GRAINS",
     name: "Crunchy Garri",
@@ -147,7 +147,7 @@ const products = [
     image: crunchygarri,
   },
   {
-    id: 10,
+    id: 110,
     category: "soup-spicy",
     categoryLabel: "SOUP SPICY",
     name: "Gino Tin Tomatoes",
@@ -160,7 +160,7 @@ const products = [
     image: null,
   },
   {
-    id: 11,
+    id: 111,
     category: "perishable",
     categoryLabel: "PERISHABLE",
     name: "Rubber Band",
@@ -173,7 +173,7 @@ const products = [
     image: null,
   },
   {
-    id: 12,
+    id: 112,
     category: "perishable",
     categoryLabel: "PERISHABLE",
     name: "Stapler Pin",
@@ -187,7 +187,7 @@ const products = [
   },
 ];
 
-function ProductCard({ product, onQuickView }) {
+function ProductCard({ product, onQuickView, addToCart }) {
   const [wished, setWished] = useState(false);
   const [hovered, setHovered] = useState(false);
 
@@ -197,7 +197,6 @@ function ProductCard({ product, onQuickView }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* Image */}
       <div className="relative overflow-hidden">
         {product.image ? (
           <img
@@ -213,7 +212,6 @@ function ProductCard({ product, onQuickView }) {
           </div>
         )}
 
-        {/* Overlay */}
         <AnimatePresence>
           {hovered && product.image && (
             <motion.div
@@ -225,21 +223,18 @@ function ProductCard({ product, onQuickView }) {
           )}
         </AnimatePresence>
 
-        {/* Out of Stock Badge */}
         {!product.inStock && (
           <div className="absolute top-3 left-3 bg-gray-800 text-white text-xs font-bold px-3 py-1 rounded-full">
             Out of Stock
           </div>
         )}
 
-        {/* Discount Badge */}
         {product.discount && product.inStock && (
           <div className="absolute top-3 left-3 bg-orange-400 text-white text-xs font-bold px-3 py-1 rounded-full">
             -{product.discount}% OFF
           </div>
         )}
 
-        {/* Wishlist */}
         <button
           onClick={(e) => { e.stopPropagation(); setWished(!wished); }}
           className={`absolute top-3 right-3 w-8 h-8 rounded-full flex items-center justify-center shadow-sm hover:scale-110 transition-all ${
@@ -252,7 +247,6 @@ function ProductCard({ product, onQuickView }) {
           />
         </button>
 
-        {/* Eye on hover */}
         <AnimatePresence>
           {hovered && product.inStock && product.image && (
             <motion.button
@@ -271,7 +265,6 @@ function ProductCard({ product, onQuickView }) {
         </AnimatePresence>
       </div>
 
-      {/* Body */}
       <div className="p-4">
         <p className="text-xs font-bold text-[#1a6b3c] mb-1 tracking-wide">
           {product.categoryLabel}
@@ -287,7 +280,10 @@ function ProductCard({ product, onQuickView }) {
         </div>
 
         {product.inStock ? (
-          <button className="w-full bg-[#1a6b3c] hover:bg-[#155a32] text-white text-sm font-semibold py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2">
+          <button
+            onClick={() => onQuickView(product)}
+            className="w-full bg-[#1a6b3c] hover:bg-[#155a32] text-white text-sm font-semibold py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2"
+          >
             <ShoppingCart size={15} />
             {product.priceRange.includes("–") ? "Select Options" : "Add to Cart"}
           </button>
@@ -304,7 +300,7 @@ function ProductCard({ product, onQuickView }) {
   );
 }
 
-export default function ProductsSection({ searchQuery = "" }) {
+export default function ProductsSection({ searchQuery = "", addToCart }) {
   const [activeCategory, setActiveCategory] = useState("all");
   const [selectedProduct, setSelectedProduct] = useState(null);
 
@@ -320,8 +316,7 @@ export default function ProductsSection({ searchQuery = "" }) {
     <section id="products" className="bg-[#f0f5f0]">
       <div className="max-w-[1200px] mx-auto w-full px-10 py-14">
 
-        {/* Category Filter Pills */}
-        <div id="categories" className="flex items-center gap-2 flex-wrap mb-10">
+        <div id="categories" className="flex items-center gap-2 overflow-x-auto pb-2 mb-10 scrollbar-hide">
           {categories.map((cat) => (
             <button
               key={cat.id}
@@ -338,7 +333,6 @@ export default function ProductsSection({ searchQuery = "" }) {
           ))}
         </div>
 
-        {/* Section Header */}
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-extrabold text-gray-900">
             {searchQuery ? `Results for "${searchQuery}"` : "All Products"}
@@ -348,7 +342,6 @@ export default function ProductsSection({ searchQuery = "" }) {
           </span>
         </div>
 
-        {/* Product Grid or Empty State */}
         {filtered.length > 0 ? (
           <div className="grid grid-cols-4 gap-5">
             {filtered.map((product) => (
@@ -356,6 +349,7 @@ export default function ProductsSection({ searchQuery = "" }) {
                 key={product.id}
                 product={product}
                 onQuickView={setSelectedProduct}
+                addToCart={addToCart}
               />
             ))}
           </div>
@@ -372,6 +366,7 @@ export default function ProductsSection({ searchQuery = "" }) {
       <QuickViewModal
         product={selectedProduct}
         onClose={() => setSelectedProduct(null)}
+        addToCart={addToCart}
       />
     </section>
   );

@@ -56,7 +56,7 @@ const products = [
   },
 ];
 
-function ProductCard({ product, index, onQuickView }) {
+function ProductCard({ product, index, onQuickView, addToCart }) {
   const [wished, setWished] = useState(false);
   const [hovered, setHovered] = useState(false);
 
@@ -142,7 +142,10 @@ function ProductCard({ product, index, onQuickView }) {
             <p className="text-xs text-gray-400 line-through">{product.originalRange}</p>
           )}
         </div>
-        <button className="w-full bg-[#1a6b3c] hover:bg-[#155a32] text-white text-sm font-semibold py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2">
+        <button
+          onClick={() => onQuickView(product)}
+          className="w-full bg-[#1a6b3c] hover:bg-[#155a32] text-white text-sm font-semibold py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2"
+        >
           <ShoppingCart size={15} />
           Select Options
         </button>
@@ -151,8 +154,13 @@ function ProductCard({ product, index, onQuickView }) {
   );
 }
 
-export default function Bestsellers() {
+export default function Bestsellers({ searchQuery = "", addToCart }) {
   const [selectedProduct, setSelectedProduct] = useState(null);
+
+  const filteredProducts = products.filter((p) =>
+    p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    p.category.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <section className="bg-[#f0f5f0]">
@@ -175,22 +183,31 @@ export default function Bestsellers() {
         </div>
 
         {/* Product Grid */}
-        <div className="grid grid-cols-4 gap-5">
-          {products.map((product, index) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              index={index}
-              onQuickView={setSelectedProduct}
-            />
-          ))}
-        </div>
+        {filteredProducts.length > 0 ? (
+          <div className="grid grid-cols-4 gap-5">
+            {filteredProducts.map((product, index) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                index={index}
+                onQuickView={setSelectedProduct}
+                addToCart={addToCart}
+              />
+            ))}
+          </div>
+        ) : (
+          searchQuery && (
+            <div className="text-center py-10 text-gray-400">
+              <p className="text-sm">No bestsellers found for "<strong>{searchQuery}</strong>"</p>
+            </div>
+          )
+        )}
       </div>
 
-      {/* Quick View Modal */}
       <QuickViewModal
         product={selectedProduct}
         onClose={() => setSelectedProduct(null)}
+        addToCart={addToCart}
       />
     </section>
   );

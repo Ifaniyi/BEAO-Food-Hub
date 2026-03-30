@@ -4,10 +4,11 @@ import { Search, Box, User, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import CartDrawer from "./CartDrawer";
 
-export default function Navbar({ searchQuery, onSearch }) {
+export default function Navbar({ searchQuery, onSearch, cartItems = [], onUpdateQuantity, onRemove }) {
   const [cartOpen, setCartOpen] = useState(false);
-  const [cartCount] = useState(0);
   const navigate = useNavigate();
+
+  const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
 
   return (
     <>
@@ -19,7 +20,7 @@ export default function Navbar({ searchQuery, onSearch }) {
             B
           </div>
           <div className="flex flex-col leading-tight">
-            <span className="text-[15px] font-bold text-gray-900 tracking-wide ">BEAO</span>
+            <span className="text-[15px] font-bold text-gray-900 tracking-wide">BEAO</span>
             <span className="text-[11px] font-semibold text-[#1a6b3c] tracking-widest">FOOD HUB</span>
           </div>
         </Link>
@@ -50,7 +51,7 @@ export default function Navbar({ searchQuery, onSearch }) {
           {/* Cube - Order Tracking */}
           <button
             onClick={() => navigate("/track-order")}
-            className="p-2 rounded-lg hover:bg-orange-200 hover:text-orange-400 transition-colors text-gray-700"
+            className="p-2 rounded-lg hover:bg-orange-50 hover:text-orange-400 transition-colors text-gray-700"
           >
             <Box size={20} strokeWidth={1.8} />
           </button>
@@ -58,7 +59,7 @@ export default function Navbar({ searchQuery, onSearch }) {
           {/* User - Profile */}
           <button
             onClick={() => navigate("/profile")}
-            className="p-2 rounded-lg hover:bg-orange-200 hover:text-orange-400 transition-colors text-gray-700"
+            className="p-2 rounded-lg hover:bg-green-50 hover:text-[#1a6b3c] transition-colors text-gray-700"
           >
             <User size={20} strokeWidth={1.8} />
           </button>
@@ -66,7 +67,7 @@ export default function Navbar({ searchQuery, onSearch }) {
           {/* Cart */}
           <button
             onClick={() => setCartOpen(true)}
-            className="relative p-2 rounded-lg hover:bg-orange-200 hover:text-[#1a6b3c] transition-colors text-gray-700"
+            className="relative p-2 rounded-lg hover:bg-green-50 hover:text-[#1a6b3c] transition-colors text-gray-700"
           >
             <ShoppingCart size={20} strokeWidth={1.8} />
             <span className="absolute top-1 right-1 bg-[#1a6b3c] text-white text-[9px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
@@ -77,7 +78,13 @@ export default function Navbar({ searchQuery, onSearch }) {
         </div>
       </nav>
 
-      <CartDrawer isOpen={cartOpen} onClose={() => setCartOpen(false)} />
+      <CartDrawer
+        isOpen={cartOpen}
+        onClose={() => setCartOpen(false)}
+        cartItems={cartItems}
+        onUpdateQuantity={onUpdateQuantity}
+        onRemove={onRemove}
+      />
     </>
   );
 }
